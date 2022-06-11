@@ -16,7 +16,7 @@
  <img src = "imgs/preview01.png" width="850" align="center">
 </p>
 
-### Why ![Vite](https://vitejs.dev/)
+### Why <a href="https://vitejs.dev/" target="_blank">Vite</a>
 
 <p align="center">
  <img src = "imgs/vite.svg" width="150" align="center">
