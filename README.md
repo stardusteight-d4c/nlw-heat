@@ -1,8 +1,6 @@
 # Next Level Week | Heat
 
-<p align="center">
- <img src = "imgs/DoWhile.svg" width="350" align="center">
-</p>
+![cover](imgs/cover.png)
 
 > Application developed from end to end, with a backend API that collects data from messages and users from GitHub. Using Socket.IO to make the server send messages to clients. Using the ORM Prisma to perform the mapping and use of the database, a technique that helps in querying and manipulating database data using an object-oriented paradigm. Finally, we developed the frontend interfaces and their integration with the backend.
 
@@ -11,10 +9,6 @@
 - To run the application locally, download this repository with a `git clone` command.
 - In server and web directory, install dependencies with `npm install` and run with `npm run dev` command.
 - Use `npx prisma studio` to view and manipulate the database.
-
-<p align="center">
- <img src = "imgs/preview01.png" width="850" align="center">
-</p>
 
 ### Why <a href="https://vitejs.dev/" target="_blank">Vite</a>
 
