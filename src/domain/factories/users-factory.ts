@@ -1,4 +1,3 @@
-
 export function makeUserObject() {
   return {
     name: "Gabriel Sena",

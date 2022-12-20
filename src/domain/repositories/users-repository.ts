@@ -4,4 +4,5 @@ type token = string
 
 export abstract class UsersRepository {
   abstract create(user: User): Promise<token>
+  abstract findById(id: string): Promise<User | null>
 }

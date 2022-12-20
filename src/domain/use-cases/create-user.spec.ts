@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { InMemoryUsersRepository } from "../../repositories/in-memory-users-repository";
-import { User } from "../../entities/User";
+import { InMemoryUsersRepository } from "../../tests/disk/in-memory-users-repository";
+import { User } from "../entities/User";
 import { CreateUser, CreateUserResponse } from "./create-user";
-import { makeUserObject } from "../../factories/users-factory";
+import { makeUserObject } from "../factories/users-factory";
 
 describe("Create a user", () => {
   it("must be possible to create a user", () => {
