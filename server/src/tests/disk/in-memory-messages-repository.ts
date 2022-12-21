@@ -5,17 +5,17 @@ import {
 } from "../../domain/factories/messages-factory";
 import { makeUserObject } from "../../domain/factories/users-factory";
 import { MessagesRepository } from "../../domain/repositories/messages-repository";
-import { CreateUser } from "../../domain/use-cases/create-user";
+import { RegisterUser } from "../../domain/use-cases/register-user";
 import { InMemoryUsersRepository } from "./in-memory-users-repository";
 
 const usersRepository = new InMemoryUsersRepository();
-const createUser = new CreateUser(usersRepository);
+const registerUser = new RegisterUser(usersRepository);
 
 export class InMemoryMessagesRepository implements MessagesRepository {
   public messages: Message[] = [];
 
   async create(msg: Message): Promise<Message> {
-    await createUser.execute(makeUserObject());
+    await registerUser.execute(makeUserObject());
 
     const isUserExisting = await usersRepository.findByGithubID(msg.owner);
 

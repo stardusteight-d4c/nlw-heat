@@ -1,30 +1,30 @@
 import { describe, expect, it } from "vitest";
 import { InMemoryUsersRepository } from "../../tests/disk/in-memory-users-repository";
 import { User } from "../entities/User";
-import { CreateUser, CreateUserResponse } from "./create-user";
+import { RegisterUser, RegisterUserResponse } from "./register-user";
 import { makeUserObject } from "../factories/users-factory";
 
-describe("Create a user", () => {
-  it("must be possible to create a user", () => {
+describe("Register a user", () => {
+  it("must be possible to register a user", () => {
     const usersRepository = new InMemoryUsersRepository();
-    const createUser = new CreateUser(usersRepository);
+    const registerUser = new RegisterUser(usersRepository);
 
     expect(
-      createUser
+      registerUser
         .execute(makeUserObject())
-        .then((data: CreateUserResponse) => data),
+        .then((data: RegisterUserResponse) => data),
     ).resolves.toBeTruthy()
 
     expect(
-      createUser
+      registerUser
         .execute(makeUserObject())
-        .then((data: CreateUserResponse) => data.user),
+        .then((data: RegisterUserResponse) => data.user),
     ).resolves.toBeInstanceOf(User);
 
     expect(
-      createUser
+      registerUser
         .execute(makeUserObject())
-        .then((data: CreateUserResponse) => data.token),
+        .then((data: RegisterUserResponse) => data.token),
     ).resolves.toBeTypeOf("string")
   });
 });

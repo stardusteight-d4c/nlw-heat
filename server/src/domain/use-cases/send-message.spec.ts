@@ -4,17 +4,17 @@ import { InMemoryUsersRepository } from "../../tests/disk/in-memory-users-reposi
 import { Message } from "../entities/Message";
 import { makeMessageObject } from "../factories/messages-factory";
 import { makeUserObject } from "../factories/users-factory";
-import { CreateUser } from "./create-user";
+import { RegisterUser } from "./register-user";
 import { SendMessage, SendMessageResponse } from "./send-message";
 
 describe("Send a message", () => {
   it("must be possible to send a message", async () => {
     const usersRepository = new InMemoryUsersRepository();
-    const createUser = new CreateUser(usersRepository);
+    const registerUser = new RegisterUser(usersRepository);
     const messagesRepository = new InMemoryMessagesRepository();
     const sendMessage = new SendMessage(messagesRepository);
 
-    const { user } = await createUser.execute(makeUserObject());
+    const { user } = await registerUser.execute(makeUserObject());
 
     expect(
       sendMessage
