@@ -1,10 +1,12 @@
 import { randomUUID } from "crypto";
 
+export type github_id = string
+
 export interface UserProps {
   name: string;
   username: string;
   avatar_url: string;
-  github_id: string;
+  github_id: github_id;
 }
 
 export class User {

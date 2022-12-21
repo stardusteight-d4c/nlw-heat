@@ -5,7 +5,7 @@ import { makeUserObject } from "../factories/users-factory";
 import { FindUser } from "./find-user";
 import { User } from "../entities/User";
 
-describe("Find a user by ID", () => {
+describe("Find a user", () => {
   it("must be possible to find a user by ID", async () => {
     const usersRepository = new InMemoryUsersRepository();
     const createUser = new CreateUser(usersRepository);
@@ -13,9 +13,9 @@ describe("Find a user by ID", () => {
 
     const { user } = await createUser.execute(makeUserObject());
 
-    const data = await findUser.execute({ id: user.id });
+    const data = await findUser.execute({ id: user.github_id });
 
-    expect(findUser.execute({ id: user.id })).resolves.toEqual({ user });
+    expect(findUser.execute({ id: user.github_id })).resolves.toEqual({ user });
     expect(findUser.execute({ id: "non-existent-id" })).resolves.toEqual(null);
     expect(data?.user).instanceOf(User);
   });

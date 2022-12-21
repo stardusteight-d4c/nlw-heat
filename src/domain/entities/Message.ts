@@ -1,27 +1,29 @@
 import { randomUUID } from "crypto";
+import { github_id } from "./User";
 
 export interface MessageProps {
   text: string;
-  created_at: Date;
-  owner: string;
+  owner: github_id;
 }
 
 export class Message {
   private _id: string;
+  private created_at: Date;
   private props: MessageProps;
 
-  constructor(props: MessageProps, id?: string) {
+  constructor(props: MessageProps, id?: string, createdAt?: Date) {
     this._id = id ?? randomUUID();
     this.props = {
       ...props,
     };
+    this.created_at = createdAt ?? new Date()
   }
 
   public get id(): string {
     return this._id;
   }
-  public get created_at(): Date {
-    return this.props.created_at;
+  public get createdAt(): Date {
+    return this.created_at;
   }
   public get owner(): string {
     return this.props.owner;
