@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
-    "start": "tsnd --transpile-only --respawn --ignore-watch node_modules src/infra/http/server.ts"
+    "start": "tsnd --watch --transpile-only --respawn --ignore-watch node_modules src/infra/http/server.ts"
   },
   "prisma": {
     "schema": "src/infra/database/prisma/schema.prisma"
@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^4.7.1",
+    "axios": "^1.2.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",

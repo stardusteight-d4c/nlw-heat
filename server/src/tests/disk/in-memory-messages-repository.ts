@@ -15,7 +15,7 @@ export class InMemoryMessagesRepository implements MessagesRepository {
   public messages: Message[] = [];
 
   async create(msg: Message): Promise<Message> {
-    await registerUser.execute(makeUserObject());
+    await registerUser.execute({code: 'anananana'});
 
     const isUserExisting = await usersRepository.findByGithubID(msg.owner);
 
