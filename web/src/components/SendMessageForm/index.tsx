@@ -15,7 +15,7 @@ export function SendMessageForm() {
     }
 
     // Requisiçao para api
-    await api.post('messages', { message })
+    await api.post('/messages', { message })
 
     setMessage('')
   }

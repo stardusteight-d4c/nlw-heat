@@ -6,8 +6,12 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "watch": true,
     "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true
+  },
+  "ts-node": {
+    "transpileOnly": true
   },
   "include": ["src/**/*.ts"]
 }

@@ -3,7 +3,6 @@ import { InMemoryMessagesRepository } from "../../tests/disk/in-memory-messages-
 import { InMemoryUsersRepository } from "../../tests/disk/in-memory-users-repository";
 import { Message } from "../entities/Message";
 import { makeMessageObject } from "../factories/messages-factory";
-import { makeUserObject } from "../factories/users-factory";
 import { RegisterUser } from "./register-user";
 import { SendMessage, SendMessageResponse } from "./send-message";
 
@@ -14,7 +13,7 @@ describe("Send a message", () => {
     const messagesRepository = new InMemoryMessagesRepository();
     const sendMessage = new SendMessage(messagesRepository);
 
-    const { user } = await registerUser.execute(makeUserObject());
+    const { user } = await registerUser.execute({code: 'aaa'});
 
     expect(
       sendMessage

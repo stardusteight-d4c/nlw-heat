@@ -1,7 +1,7 @@
-import prisma from "./index";
+import prisma from "../index";
 import { sign } from "jsonwebtoken";
-import { User } from "../../../domain/entities/User";
-import { UsersRepository } from "../../../domain/repositories/users-repository";
+import { User } from "../../../../domain/entities/User";
+import { UsersRepository } from "../../../../domain/repositories/users-repository";
 import axios from "axios";
 
 // https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps#web-application-flow
