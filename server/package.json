@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
-    "start": "tsnd --watch --transpile-only --respawn --ignore-watch node_modules src/infra/http/server.ts"
+    "start": "tsnd --transpile-only --respawn --watch node_modules src/infra/http/server.ts"
   },
   "prisma": {
     "schema": "src/infra/database/prisma/schema.prisma"

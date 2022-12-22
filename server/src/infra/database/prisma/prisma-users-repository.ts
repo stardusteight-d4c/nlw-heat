@@ -80,7 +80,19 @@ export class PrismaUsersRepository implements UsersRepository {
     return { token, user: userInstance };
   }
 
-  findByGithubID(id: string): Promise<User | null> {
-    throw new Error("Method not implemented.");
+  async findByGithubID(id: string): Promise<User | null> {
+    const user = await prisma.user.findFirst({
+      where: {
+        id,
+      }
+    });
+
+    if (!user) {
+      return null
+    }
+
+    const userInstance = new User(user)
+
+    return userInstance;
   }
 }

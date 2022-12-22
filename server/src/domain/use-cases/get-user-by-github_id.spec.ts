@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { InMemoryUsersRepository } from "../../tests/disk/in-memory-users-repository";
 import { RegisterUser } from "./register-user";
-import { makeUserObject } from "../factories/users-factory";
 import { User } from "../entities/User";
 import { GetUserByGithubID } from "./get-user-by-github_id";
 
@@ -11,7 +10,7 @@ describe("Get a user by Github ID", () => {
     const registerUser = new RegisterUser(usersRepository);
     const findUser = new GetUserByGithubID(usersRepository);
 
-    const { user } = await registerUser.execute(makeUserObject());
+    const { user } = await registerUser.execute({code: 'github_code'});
 
     const data = await findUser.execute({ id: user.github_id });
 

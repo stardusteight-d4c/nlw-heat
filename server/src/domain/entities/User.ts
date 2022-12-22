@@ -23,7 +23,6 @@ export class User {
   public get id(): string {
     return this._id;
   }
-
   public get name(): string {
     return this.props.name;
   }
