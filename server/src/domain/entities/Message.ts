@@ -1,9 +1,10 @@
 import { randomUUID } from "crypto";
-import { github_id } from "./User";
+import { github_id, User } from "./User";
 
 export interface MessageProps {
   text: string;
   owner: github_id;
+  user?: User | undefined
 }
 
 export class Message {
@@ -27,6 +28,9 @@ export class Message {
   }
   public get owner(): string {
     return this.props.owner;
+  }
+  public get user(): User | undefined {
+    return this.props.user
   }
 
   public get text(): string {

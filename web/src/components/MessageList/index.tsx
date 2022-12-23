@@ -39,7 +39,9 @@ export function MessageList() {
 
   useEffect(() => {
     // Chamada para API
-    api.get<Message[]>('messages/last3').then(response => {
+    api.get<Message[]>('/messages/last3').then(response => {
+      console.log(response);
+      
       setMessages(response.data);
     })
   }, [])

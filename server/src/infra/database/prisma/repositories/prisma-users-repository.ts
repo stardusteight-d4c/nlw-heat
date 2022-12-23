@@ -19,8 +19,6 @@ interface UserResponse {
 
 export class PrismaUsersRepository implements UsersRepository {
   async register(code: string): Promise<{ token: string; user: User }> {
-    console.log(code);
-
     const acess_token_url = "https://github.com/login/oauth/access_token";
     const { data } = await axios
       .post<AccessTokenResponse>(acess_token_url, null, {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { GetUserByGithubID } from "../../../domain/use-cases/get-user-by-github_id";
-import { UserMapper } from "../../../mappers/user-mapper";
+import { UserMapper } from "../../../mappers/mappers";
 import { PrismaUsersRepository } from "../../database/prisma/repositories/prisma-users-repository";
 
 export class GetUserByGithubIDController {
