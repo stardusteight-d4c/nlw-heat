@@ -1,4 +1,4 @@
-import { useContext, useState, FormEvent} from 'react'
+import { useContext, useState, FormEvent } from 'react'
 import { VscGithubInverted, VscSignOut } from 'react-icons/vsc'
 import styles from './styles.module.scss'
 import { AuthContext } from '../../contexts/auth'
@@ -11,10 +11,9 @@ export function SendMessageForm() {
   async function handleSendMessage(event: FormEvent) {
     event.preventDefault()
     if (!message.trim()) {
-      return;
+      return
     }
 
-    // Requisiçao para api
     await api.post('/messages', { message })
 
     setMessage('')
@@ -44,7 +43,7 @@ export function SendMessageForm() {
           name="message"
           id="message"
           placeholder="Qual sua expectativa para o evento?"
-          onChange={event => setMessage(event.target.value)}
+          onChange={(event) => setMessage(event.target.value)}
           value={message}
         />
 

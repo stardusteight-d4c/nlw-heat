@@ -1,3 +1,5 @@
+$medium: 768px;
+
 .sendMessageFormWrapper {
   background: #1b1b1f;
   padding: 24px;
@@ -8,6 +10,10 @@
   align-items: center;
   text-align: center;
   position: relative;
+  @media screen and (max-width: $medium) {
+    width: 90vw;
+    margin-bottom: 15px;
+  }
 }
 
 .signOutButton {

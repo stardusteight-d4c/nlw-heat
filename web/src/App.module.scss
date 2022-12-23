@@ -1,3 +1,5 @@
+$medium: 768px;
+
 .contentWrapper {
   max-width: 1200px;
   min-height: 100vh;
@@ -7,6 +9,13 @@
   grid-template-columns: 1fr 453px;
   column-gap: 120px;
   position: relative;
+  @media screen and (max-width: $medium) {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .contentSigned::before {
@@ -18,4 +27,7 @@
   position: absolute;
   right: -75px;
   top: 0;
+  @media screen and (max-width: $medium) {
+    display: none;
+  }
 }

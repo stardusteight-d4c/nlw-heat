@@ -1,17 +1,17 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { api } from '../services/api';4
+import { api } from '../services/api'
 
 type User = {
-  id: string;
-  name: string;
-  username: string;
-  avatar_url: string;
+  id: string
+  name: string
+  username: string
+  avatar_url: string
 }
 
 type AuthContextData = {
-  user: User | null;
-  signInUrl: string;
-  signOut: () => void;
+  user: User | null
+  signInUrl: string
+  signOut: () => void
 }
 
 export const AuthContext = createContext({} as AuthContextData)
@@ -21,19 +21,19 @@ type AuthProvider = {
 }
 
 type AuthResponse = {
-  token: string;
+  token: string
   user: {
-    id: string;
-    avatar_url: string;
-    name: string;
-    username: string;
+    id: string
+    avatar_url: string
+    name: string
+    username: string
   }
 }
 
 export function AuthProvider(props: AuthProvider) {
   const [user, setUser] = useState<User | null>(null)
 
-  const signInUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=62d1b78795c91cac0855`;
+  const signInUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=62d1b78795c91cac0855`
 
   async function signIn(githubCode: string) {
     const response = await api.post<AuthResponse>('authenticate', {
@@ -43,7 +43,7 @@ export function AuthProvider(props: AuthProvider) {
     const { token, user } = response.data
     localStorage.setItem('@dowhile:token', token)
 
-    api.defaults.headers.common.authorization = `Bearer ${token}`;
+    api.defaults.headers.common.authorization = `Bearer ${token}`
 
     setUser(user)
   }
@@ -57,16 +57,16 @@ export function AuthProvider(props: AuthProvider) {
     const token = localStorage.getItem('@dowhile:token')
 
     if (token) {
-      api.defaults.headers.common.authorization = `Bearer ${token}`;
+      api.defaults.headers.common.authorization = `Bearer ${token}`
 
-      api.get<User>('/profile').then(response => {
+      api.get<User>('/profile').then((response) => {
         setUser(response.data)
       })
     }
   }, [])
 
   useEffect(() => {
-    const url = window.location.href;
+    const url = window.location.href
     const hasGithubCode = url.includes('?code=')
 
     if (hasGithubCode) {
@@ -81,5 +81,5 @@ export function AuthProvider(props: AuthProvider) {
     <AuthContext.Provider value={{ signInUrl, user, signOut }}>
       {props.children}
     </AuthContext.Provider>
-  );
+  )
 }

@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react'
 import io from 'socket.io-client'
 
 type Message = {
-  id: string;
-  text: string;
+  id: string
+  text: string
   user: {
-    name: string;
-    avatar_url: string;
+    name: string
+    avatar_url: string
   }
 }
 
@@ -27,22 +27,19 @@ export function MessageList() {
   useEffect(() => {
     setInterval(() => {
       if (messagesQueue.length > 0) {
-        setMessages(prevState => [
-          messagesQueue[0],
-          prevState[0],
-          prevState[1],
-        ].filter(Boolean))
+        setMessages((prevState) =>
+          [messagesQueue[0], prevState[0], prevState[1]].filter(Boolean)
+        )
         messagesQueue.shift()
       }
     }, 3000)
   }, [])
 
   useEffect(() => {
-    // Chamada para API
-    api.get<Message[]>('/messages/last3').then(response => {
-      console.log(response);
-      
-      setMessages(response.data);
+    api.get<Message[]>('/messages/last3').then((response) => {
+      console.log(response)
+
+      setMessages(response.data)
     })
   }, [])
 
@@ -50,7 +47,7 @@ export function MessageList() {
     <div className={styles.messageListWrapper}>
       <img src={logoImg} alt="DoWhile 2021" />
       <ul className={styles.messageList}>
-        {messages.map(message => {
+        {messages.map((message) => {
           return (
             <li key={message.id} className={styles.message}>
               <p className={styles.messageContent}>{message.text}</p>
@@ -61,7 +58,7 @@ export function MessageList() {
                 <span>{message.user.name}</span>
               </div>
             </li>
-          );
+          )
         })}
       </ul>
     </div>
