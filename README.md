@@ -224,7 +224,7 @@ I often find myself in situations where a project has a model on both the server
 
 Since this concern occurs over and over again, it makes sense to centralize the `translation` of the `API response object <==> Javascript object model`, `standardize` it and take it out so that the right part of your application can be concerned with him.
 
- - Example
+ - Examples
 
 ```ts
 import { Message } from "../domain/entities/Message";
