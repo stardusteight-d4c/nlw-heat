@@ -11,8 +11,6 @@ export class SendMessageController {
       const { message } = req.body;
       const { user_id } = req;
 
-      console.log('user_id', user_id);
-
       const result = await service.execute({ text: message, owner: user_id });
       return res.json(result);
     } catch (err) {

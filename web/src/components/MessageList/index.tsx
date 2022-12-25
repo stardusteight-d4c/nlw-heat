@@ -16,7 +16,7 @@ type Message = {
 
 let messagesQueue: Message[] = []
 
-const socket = io('http://localhost:5000')
+const socket = io(import.meta.env.VITE_SERVER)
 socket.on('new_message', (newMessage: Message) => {
   messagesQueue.push(newMessage)
 })
@@ -37,8 +37,6 @@ export function MessageList() {
 
   useEffect(() => {
     api.get<Message[]>('/messages/last3').then((response) => {
-      console.log(response)
-
       setMessages(response.data)
     })
   }, [])
