@@ -129,5 +129,174 @@ And, therefore, the DDD `guides us through its building blocks` to use some cons
  
 *<i>medium.com/cwi-software/domain-driven-design-do-in%C3%ADcio-ao-c%C3%B3digo-569b23cb3d47</i> <br />
 
+<br />
+
+## Factories and Data Mappers 
+
+ - <strong>Factories</strong>
+
+`Function factory` is similar to constructor functions/class functions, but instead of using new to create an object, factory functions simply `create an object and return it`.
+
+Factory functions are a very useful tool in JavaScript. Factory functions in JavaScript are similar to constructor functions/class functions, but do not require the use of the `this` keyword for inner values ​​or the use of the `new` keyword when instantiating new objects. Factory functions can contain built-in values, methods, etc., just like normal regular functions. Factory functions differ from regular functions in that they always return an object, which will contain any value, method, etc.
+
+### Why is it useful?
+
+If we have `complex logic and we have to create several objects repeatedly with the same logic`, we can write the logic once in a function and use that function as a factory to create our objects. It's exactly the same as a real-world product factory.
+
+Example 1:
+
+We have a factory function that will produce new robots with a single logic. Using this we can produce as many objects/robots as we want.
+
+```js
+// Function creating new objects 
+// without use of 'new' keyword
+function createRobot(name) {
+  return {
+    name: name,
+    talk: function () {
+      console.log('My name is ' 
+      + name + ', the robot.');
+    }
+  };
+}
+
+//Create a robot with name Chitti
+const robo1 = createRobot('Chitti');
+robo1.talk();
+// Create a robot with name Chitti 2.O Upgraded
+const robo2 = createRobot('Chitti 2.O Upgraded');
+robo2.talk();
+```
+
+output: 
+
+```
+My name is Chitti, the robot.
+My name is Chitti 2.0 Upgraded, the robot.
+```
+
+example 2:
+
+```js
+// Factory Function creating person
+var Person = function (name, age) {
+  // creating person object
+  var person = {};
+
+  // parameters as keys to this object  
+  person.name = name;
+  person.age = age;
+
+  // function to greet
+  person.greeting = function () {
+      return (
+      'Hello I am ' + person.name 
+          + '. I am ' + person.age 
+          + ' years old. '
+      );
+  };
+  return person;
+};
+
+var person1 = Person('Abhishek', 20);
+console.log(person1.greeting());
+
+var person2 = Person('Raj', 25);
+console.log(person2.greeting());
+```
+
+output: 
+
+```
+Hello I am Abhishek. I am 20 years old. 
+Hello I am Raj. I am 25 years old. 
+```
+
+ - <strong>Data Mappers</strong>
+ 
+The responsibility of a Mapper is to make all the transformations:
+
+ - From Domain to DTO
+ - From Domain to Persistence
+ - From Persistence to Domain
+
+I often find myself in situations where a project has a model on both the server and the client, passed through an API, but with such minor differences between the two that it precludes just using a direct read from the JSON or JSON.stringify (). Sometimes a property is collapsed into one from the `API` but needs to be split into different properties on the `client`.
+
+Since this concern occurs over and over again, it makes sense to centralize the `translation` of the `API response object <==> Javascript object model`, `standardize` it and take it out so that the right part of your application can be concerned with him.
+
+ - Example
+
+```ts
+import { Message } from "../domain/entities/Message";
+import { User } from "../domain/entities/User";
+
+interface MessageModelToDomain {
+  id: string;
+  text: string;
+  created_at: Date;
+  user_id: string;
+  user: User;
+}
+
+export interface MessageModelToHttp {
+  id: string;
+  text: string;
+  created_at: Date;
+  owner: string;
+  user: {
+    props: {
+      _id: string;
+      props: {
+        github_id: string;
+        name: string;
+        avatar_url: string;
+        username: string;
+      };
+    };
+  };
+}
+
+export class UserMapper {
+  static toPrisma(user: User) {
+    return {
+      id: user.id,
+      name: user.name,
+      github_id: user.github_id,
+      username: user.username,
+      avatar_url: user.avatar_url,
+    };
+  }
+}
+
+export class MessageMapper {
+  static toDomain(message: MessageModelToDomain) {
+    return new Message({
+      text: message.text,
+      owner: message.user_id,
+      user: new User(message.user!),
+    });
+  }
+
+  static toHttp(message: MessageModelToHttp) {
+    return {
+      id: message.id,
+      text: message.text,
+      created_at: new Date(message.text),
+      user_id: message.owner,
+      user: {
+        id: message.user.props._id,
+        name: message.user.props.props.name,
+        github_id: message.user.props.props.github_id,
+        username: message.user.props.props.username,
+        avatar_url: message.user.props.props.avatar_url,
+      },
+    };
+  }
+}
+```
+
+ 
+ 
+
 
 
