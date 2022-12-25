@@ -227,6 +227,8 @@ Since this concern occurs over and over again, it makes sense to centralize the 
  - Examples
 
 ```ts
+// src/mappers/mappers.ts
+
 import { Message } from "../domain/entities/Message";
 import { User } from "../domain/entities/User";
 
