@@ -297,6 +297,219 @@ export class MessageMapper {
 }
 ```
 
+<br />
+
+## Middlewares 
+
+Middleware is software that different `applications use to communicate with each other`. It provides functionality to intelligently and efficiently connect applications so you can innovate faster. Middleware `acts as a bridge between diverse technologies`, tools and databases to integrate them seamlessly into a single system. The single system offers a unified service to its users. For example, a Windows frontend application sends and receives data from a Linux backend server, but the application's users are unaware of the difference.
+
+ - <strong>Software development</strong>
+
+Software developers use middleware to integrate different software components into other applications. The middleware offers an application programming interface (API) standard to manage the necessary input and output of data from the component. The internal binding with the component is not visible to the user. Developers use APIs to request necessary services from software components.
+
+ - <strong>Data transmission</strong>
+
+Software applications use middleware to reliably send and receive data streams. Data streams are a high-speed transmission of continuous data. They are important for reliable video and audio transmissions.
+
+### Using middlewares with Express
+
+Express is a web-based routing and middleware framework that has minimal functionality of its own: `An Express application is essentially a series of calls to middleware functions`.
+
+Middleware functions are functions that have access to the `request (req) object`, the `response (res) object`, and the next middleware function in the application's request-response cycle. The next middleware function is commonly denoted by a variable called `next`.
+
+Middleware functions can perform the following tasks:
+
+ - Run any code.
+ - Make changes to the request and response objects.
+ - Terminate the request-response cycle.
+ - Call the next middleware function on the stack.
+
+If the current middleware function does not finish the request-response cycle, it needs to call `next()` to pass control to the next middleware function. Otherwise, the request will be suspended.
+
+An Express application can use the following types of middleware:
+ 
+ - Application-level middleware
+ - Router-grade middleware
+ - Error handling middleware
+ - Integrated middleware
+ - Third Party Middleware
+
+You can load both router-level and application-level middleware with an optional mount path. It is also possible to load a number of middleware functions together, which creates a sub-stack of the middleware system at a mount point.
+
+#### Application-level middleware
+
+Bind application-level middleware to an instance of the `app object` using the `app.use()` and `app.METHOD()` functions, `where METHOD is the HTTP method of the request` that the middleware function handles (such as GET, PUT, or POST) in lower case.
+
+This example shows a middleware function without an mount path. `The function runs whenever the application receives a request`.
+
+```js
+var app = express();
+
+app.use(function (req, res, next) {
+  console.log('Time:', Date.now());
+  next();
+});
+```
+
+This example shows a middleware role built into the path `/user/:id`. The function runs for any type of HTTP request in the `/user/:id` path.
+
+```js
+app.use('/user/:id', function (req, res, next) {
+  console.log('Request Type:', req.method);
+  next();
+});
+```
+
+To skip the rest of the middleware functions of a router middleware stack, call next('route') to pass control to the next route. NOTE: next('route') will only work on middleware functions that are loaded using the app.METHOD() or router.METHOD() functions.
+
+This example shows a middleware sub-stack that handles GET requests on the path /user/:id.
+
+```js
+app.get('/user/:id', function (req, res, next) {
+  // if the user ID is 0, skip to the next route
+  if (req.params.id == 0) next('route');
+  // otherwise pass the control to the next middleware function in this stack
+  else next(); //
+}, function (req, res, next) {
+  // render a regular page
+  res.render('regular');
+});
+
+// handler for the /user/:id path, which renders a special page
+app.get('/user/:id', function (req, res, next) {
+  res.render('special');
+});
+```
+
+#### Router-grade middleware
+
+Router-level middleware works the same as application-level middleware, but `is bound to an instance of express.Router()`.
+
+```js
+var router = express.Router();
+```
+
+Load router-level middleware using the `router.use()` and `router.METHOD()` functions.
+
+The following example code replicates the middleware system shown above for application-level middleware, using router-level middleware:
+
+```js
+var app = express();
+var router = express.Router();
+
+// a middleware function with no mount path. This code is executed for every request to the router
+router.use(function (req, res, next) {
+  console.log('Time:', Date.now());
+  next();
+});
+
+// a middleware sub-stack shows request info for any type of HTTP request to the /user/:id path
+router.use('/user/:id', function(req, res, next) {
+  console.log('Request URL:', req.originalUrl);
+  next();
+}, function (req, res, next) {
+  console.log('Request Type:', req.method);
+  next();
+});
+
+// a middleware sub-stack that handles GET requests to the /user/:id path
+router.get('/user/:id', function (req, res, next) {
+  // if the user ID is 0, skip to the next router
+  if (req.params.id == 0) next('route');
+  // otherwise pass control to the next middleware function in this stack
+  else next(); //
+}, function (req, res, next) {
+  // render a regular page
+  res.render('regular');
+});
+
+// handler for the /user/:id path, which renders a special page
+router.get('/user/:id', function (req, res, next) {
+  console.log(req.params.id);
+  res.render('special');
+});
+
+// mount the router on the app
+app.use('/', router);
+```
+
+#### Error handling middleware
+
+> Error handling middleware always takes `four arguments`. You must provide four arguments to identify it as an error-handling middleware function. Even if you don't need to use the next object, you must specify it to maintain the signature. Otherwise, the next object will be interpreted as ordinary middleware and error handling will fail.
+ 
+Define error-handling middleware functions the same way as other middleware functions, except with four arguments instead of three, specifically with the signature `(err, req, res, next)`:
+
+```js
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+```
+*<i>expressjs.com/pt-br/guide/using-middleware.html</i> <br />
+
+### ensureAuthenticated Middleware in the Application
+
+The ensureAuthenticated middleware checks if the user's `JWT token` exists and if it hasn't expired yet, it's a way to control the requests made to the `GET /profile` and `POST /messages` routes since we don't want to get the data from a user who at least has an authentication token, for that he must go through the `/authenticate` route that will generate such a token for the user, and such route is free from the ensureAuthenticated middleware. We also want to ensure that only authenticated users can send messages on the platform, so the `POST /messages` route also has middleware. Note that the authentication token is always being sent from the client side via the headers but specifically `authorization`:
+
+```ts
+// src/infra/http/middleware/ensureAuthenticated.ts
+
+import { Request, Response, NextFunction } from "express";
+import { verify } from "jsonwebtoken";
+
+interface IPayload {
+  sub: string;
+}
+
+export function ensureAuthenticated(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const authToken = req.headers.authorization;
+  if (!authToken) {
+    return res.status(401).json({ errorCode: "token.invalid" });
+  }
+
+  /**
+   * Bearer <token>
+   * [0] = Bearer
+   * [1] = <token>
+   */
+  const [, token] = authToken.split(" ");
+  try {
+    const { sub } = verify(token, process.env.JWT_SECRET!) as IPayload;
+    req.user_id = sub;
+    return next();
+  } catch (error) {
+    return res.status(401).json({ errorCode: "token.expired" });
+  }
+}
+```
+
+```ts 
+// src/infra/http/routes.ts
+
+// ...
+const router = Router();
+
+router.post("/authenticate", new AuthenticateUserController().handle);
+router.get(
+  "/profile",
+  ensureAuthenticated,
+  new GetUserByGithubIDController().handle,
+);
+router.post(
+  "/messages",
+  ensureAuthenticated,
+  new SendMessageController().handle,
+);
+router.get("/messages/last3", new GetLastThereeMessagesController().handle);
+
+export { router };
+```
+ 
+ 
  
  
 
