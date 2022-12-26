@@ -10,7 +10,7 @@
 :arrow_right: Clean Architecture & Domain Drive Design <br />
 :arrow_right: Factories and Mappers <br />
 :arrow_right: Middlewares <br />
-:arrow_right: Github Authentication <br />
+:arrow_right: Github Authentication - Web application Flow <br />
 
 <br />
 
@@ -508,10 +508,259 @@ router.get("/messages/last3", new GetLastThereeMessagesController().handle);
 
 export { router };
 ```
- 
- 
- 
- 
+<br />
+
+## Github Authentication - Web application Flow
+
+The web application flow to authorize users for your app is:
+
+1. Request a user's GitHub identity
+2. Users are redirected back to your site by GitHub
+3. Your app accesses the API with the user's access token
 
 
+### 1. Request a user's GitHub identity
+
+```
+GET https://github.com/login/oauth/authorize
+```
+
+#### Parameters
+ 
+ - <strong>client_id <i>string Required</i></strong> - The client ID you received from GitHub when you registered.
+
+```tsx
+// web/src/contexts/auth.tsx
+
+export function AuthProvider(props: AuthProvider) {
+  const [user, setUser] = useState<User | null>(null)
+
+  const signInUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=62d1b78795c91cac0855`
+
+  async function signIn(githubCode: string) {
+    const response = await api.post<AuthResponse>('/authenticate', {
+      code: githubCode,
+    })
+
+    const { token, user } = response.data
+    localStorage.setItem('@dowhile:token', token)
+
+    api.defaults.headers.common.authorization = `Bearer ${token}`
+
+    setUser(user)
+  }
+
+  function signOut() {
+    setUser(null)
+    localStorage.removeItem('@dowhile:token')
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('@dowhile:token')
+
+    if (token) {
+      api.defaults.headers.common.authorization = `Bearer ${token}`
+
+      api.get<User>('/profile').then((response) => {
+        setUser(response.data)
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    const url = window.location.href
+    const hasGithubCode = url.includes('?code=')
+
+    console.log('hasGithubCode', hasGithubCode);
+    console.log('url', url);
+    
+
+    if (hasGithubCode) {
+      const [urlWithoutCode, githubCode] = url.split('?code=')
+
+      window.history.pushState({}, '', urlWithoutCode)
+      signIn(githubCode)
+    }
+  }, [])
+
+  return (
+    <AuthContext.Provider value={{ signInUrl, user, signOut }}>
+      {props.children}
+    </AuthContext.Provider>
+  )
+}
+```
+
+```tsx
+// web/src/components/LoginBox/index.tsx
+
+export function LoginBox() {
+  const { signInUrl } = useContext(AuthContext)
+
+  return (
+    <div className={styles.loginBoxWrapper}>
+      <strong>Entre e compartilhe sua mensagem</strong>
+      <a href={signInUrl} className={styles.signInWithGithub}>
+        <VscGithubInverted size="24px" />
+        Entrar com GitHub
+      </a>
+    </div>
+  )
+}
+```
+
+### 2. Users are redirected back to your site by GitHub
+
+If the user accepts your request, GitHub redirects back to your site with a temporary code in a `code` parameter as well as the `state` you provided in the previous step in a state parameter. The temporary code will expire after 10 minutes. If the states don't match, then a third party created the request, and you should abort the process.
+
+```
+url http://localhost:3000/?code=34be57e5fea1262d6332
+```
+
+Exchange this code for an access token:
+
+```
+POST https://github.com/login/oauth/access_token
+```
+
+
+```ts
+// server/src/infra/http/controllers/authenticate-user-controller.ts
+
+export class AuthenticateUserController {
+  async handle(req: Request, res: Response) {
+    
+    const usersRepository = new PrismaUsersRepository();
+    const service = new RegisterUser(usersRepository);
+    try {
+      const { code } = req.body;
+      const result = await service.execute({ code: code });
+      return res.status(200).json(result);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        status: false,
+        msg: "The code passed is incorrect or expired.",
+      });
+    }
+  }
+}
+```
+
+```ts
+// server/src/domain/repositories/users-repository.ts
+
+import { github_id, User } from '../entities/User'
+
+export abstract class UsersRepository {
+  abstract register(code: string): Promise<{token: string, user: User}>
+  abstract findByGithubID(id: github_id): Promise<User | null>
+}
+```
+
+```ts
+// server/src/domain/use-cases/register-user.ts
+
+export interface RegisterUserRequest {
+  code: string;
+}
+
+export interface RegisterUserResponse {
+  user: User;
+  token: string;
+}
+
+export class RegisterUser {
+  constructor(private usersRepository: UsersRepository) {}
+
+  async execute(request: RegisterUserRequest): Promise<RegisterUserResponse> {
+    const { token, user } = await this.usersRepository.register(request.code);
+
+    return { token, user };
+  }
+}
+```
+
+#### Parameters
+ 
+ - <strong>client_id <i>string Required</i></strong> - The client ID you received from GitHub for your OAuth App.
+ - <strong>client_secret <i>string	Required</i></strong> - The client secret you received from GitHub for your OAuth App.
+ - <strong>code <i>string	Required</i></strong> - The code you received as a response to `Step 1`.
+ 
+### 3. Use the access token to access the API
+
+`The access token allows you to make requests to the API on a behalf of a user`.
+
+```
+Authorization: Bearer OAUTH-TOKEN
+GET https://api.github.com/user
+```
+
+```ts
+// server/src/infra/database/prisma/repositories/prisma-users-repository.ts
+
+export class PrismaUsersRepository implements UsersRepository {
+  async register(code: string): Promise<{ token: string; user: User }> {
+    const acess_token_url = "https://github.com/login/oauth/access_token";
+    const { data } = await axios
+      .post<AccessTokenResponse>(acess_token_url, null, {
+        params: {
+          client_id: process.env.GITHUB_CLIENT_ID,
+          client_secret: process.env.GITHUB_CLIENT_SECRET,
+          code,
+        },
+        headers: { Accept: "application/json" },
+      })
+      .catch((error) => {
+        throw new Error("The code passed is incorrect or expired.");
+      });
+
+    const res = await axios.get<UserResponse>("https://api.github.com/user", {
+      headers: {
+        authorization: `Bearer ${data.access_token}`,
+      },
+    });
+
+    const { login: username, id, avatar_url, name } = res.data;
+
+    const userData = await prisma.user.findFirst({
+      where: {
+        github_id: id.toString(),
+      },
+    });
+
+    const user =
+      userData ??
+      (await prisma.user.create({
+        data: {
+          github_id: id.toString(),
+          username,
+          avatar_url,
+          name,
+        },
+      }));
+
+    const userInstance = new User(user);
+
+    const token = sign(
+      {
+        user: {
+          name: user.name,
+          avatar_url: user.avatar_url,
+          id: user.id,
+        },
+      },
+      process.env.JWT_SECRET!,
+      {
+        subject: user.id,
+        expiresIn: "1d",
+      },
+    );
+
+    return { token, user: userInstance };
+  }
+}
+```
+
+<i>docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps#web-application-flow</i> <br />
 
