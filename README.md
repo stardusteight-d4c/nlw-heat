@@ -7,14 +7,14 @@
 > The application was initially developed following good back-end development practices, such as `separating controller responsibilities into services`,
 > as you can see in the `main` branch, but when redoing the project I used `Domain Drive Design` concepts to improve my knowledge of clean architecture.
 
-:arrow_right: Clean Architecture & Domain Drive Design <br />
+:arrow_right: Clean Architecture & Domain Driven Design <br />
 :arrow_right: Factories and Mappers <br />
 :arrow_right: Middlewares <br />
 :arrow_right: Github Authentication - Web application Flow <br />
 
 <br />
 
-## Clean Architecture & Domain Drive Design 
+## Clean Architecture & Domain Driven Design 
 
 A software system that is difficult to develop is unlikely to have a long, healthy lifespan. Therefore, `the architecture` must facilitate the development of this system by the development teams.
 
