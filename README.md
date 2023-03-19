@@ -1,149 +1,88 @@
-# NLW Heat | Domain Driven Design
+<div align="center">
+  <img src="logo.png" width="222" height="78" />
+</div>
 
-![banner](banner.png)
+<h1 align="center">
+ NLW Heat, Real-time Feedback
+</h1>
 
-> Another project carried out at the Rocketseat event, `Next Level Week - Heat`, in this edition we build an end-to-end application, with
-> the purpose of authenticating the user via Github's authentication provider so that the user can send a message about the expectations of the event.
-> The application was initially developed following good back-end development practices, such as `separating controller responsibilities into services`,
-> as you can see in the `main` branch, but when redoing the project I used `Domain Drive Design` concepts to improve my knowledge of clean architecture.
+Project of a real-time feedback application developed with modern and efficient technologies, the application allows users to provide real-time feedback, making the experience more interactive and effective.
 
-:arrow_right: Clean Architecture & Domain Driven Design <br />
-:arrow_right: Factories and Mappers <br />
-:arrow_right: Middlewares <br />
-:arrow_right: Github Authentication - Web application Flow <br />
+On the frontend, React and TypeScript are used to create a dynamic and responsive user interface. To send and receive data from the API, Axios is used, which allows us to easily send and receive HTTP requests. For styling, Sass was chosen, which is a more advanced and efficient CSS style sheet language. Additionally, we utilize Socket.io to establish real-time communication with the server and update the UI based on user interactions. Finally, Vite to compile and serve the application quickly and efficiently.
 
-<br />
+On the backend, Node.js and TypeScript were used to create a fast and scalable server. To allow real-time communication with the client, Socket.io was used, which is a JavaScript library that provides an API for real-time communication between the client and the server. Express as a framework for creating routes and controlling incoming HTTP requests. To protect our routes and ensure application security, the Json Web Token was used. Finally, Axios to send HTTP requests to other APIs when needed.
 
-## Clean Architecture & Domain Driven Design 
+With this Real-Time Feedback application, users can provide instant feedback, making the experience more dynamic and interactive.
 
-A software system that is difficult to develop is unlikely to have a long, healthy lifespan. Therefore, `the architecture` must facilitate the development of this system by the development teams.
+## :hammer_and_wrench: Tools
 
-### Product, Module and Component
+### Frontend
 
-- <strong>Component</strong>
+* React
+* TypeScript
+* Axios
+* Sass
+* Socket.io
+* Vite
 
-A component is a `single piece`, usually relatively small in scope, possibly general purpose.
+### Backend
 
-Components are units of deployments. `They are the smallest entities that can be deployed as part of a system`, in interpreted languages, they are aggregations of source files. Components can be bundled into a single executable. They can also be bundled into a single file or deployed independently as separate dynamically loaded plugins. In any case, when effectively deployed, well-designed components always retain the ability to be independently deployed and therefore independently developed.
+* Node.js
+* TypeScript
+* Socket.io
+* Express
+* Json Web Token
+* Axios
 
-```
-Product - application, library, package, service
-  Module - GUI, core logic, data, etc...
-    Component - purpose specific collection of objects
-```
-
- - <strong>Product</strong>
-
-The product is a functional system that aggregates a collection of modules (the fundamental parts for the functioning of the system).
-
- - <strong>Module</strong>
+## :mailbox_with_mail: Utilities
  
-JavaScript modules are a way for you to share information between files, so all files that import this module will be able to use and benefit from its functions or information that has been exposed. This way, we avoid having to keep loading N files.
+### Web Sockets 
 
-```
-Shapes             <- Package/Library name
-  - Circle.js      <-
-  - Rectangle.js   <- Modules that belong to the Shapes package/library
-  - Square.js      <-
-```
+Web Sockets is a technology that allows real-time bidirectional communication between a client (usually a web browser) and a server, without the need for page refreshes. It works as a persistent communication channel that allows the transfer of data between the client and the server efficiently and reliably.
 
-The dynamically linked files, which can be assembled at runtime, are the software components of our architectures. It took 50 years, but we've reached a point where component plugin architecture can be applied as the typical pattern, as opposed to the herculean effort it was in the past.
+However, implementing Web Sockets is not a simple task, as it requires detailed configuration of the server, in addition to custom code for the client. To help with this task, the Socket.io library was created.
 
-Teams with different structures require different architectural decisions. On the one hand, a small team of five developers could very well work together to develop a minolithic system with no defined components or interfaces. In fact, this team would likely see architectural frameworks as something of an obstacle during the early days of development. That's probably why so many systems don't have good architecture: they started with none because the team was small and didn't want to face the hassle of a superstructure.
+Socket.io is a JavaScript library that provides an API for real-time communication between the client and the server. It allows developers to build web applications that support real-time, two-way communication without having to deal with the implementation details of Web Sockets. Socket.io is also cross-browser and cross-device compatible and supports fallbacks in case of incompatibility.
 
-*<i>Clean Architecture By Robert C. Martin</i> <br />
+In addition, Socket.io also provides additional features such as the ability to create communication channels, emit custom events and send messages to specific customer groups. These features can be used to build real-time web applications such as chats, multiplayer games, and real-time collaboration systems.
 
-### Main benefits of a good software architecture
-
-In a simple way, we can list the main benefits of software architecture:
-
- - Risk reduction with information security and systemic interruptions
- - Efficient interaction between different sectors of the company
- - Provision of flexible and high quality solutions
- - Easy integration with different solutions
- - Easy scalability if needed
- - Less impact if there is a need for maintenance
-
-In addition, good practices and requirements related to software architecture allow the development of solutions to be based more easily on the `agile methodology`, facilitating the management of deliveries.
-
-Still on the benefits of software architecture, when looking for a specific modeling that allows combining different components, in order to guarantee the benefits listed above, software architects are based on the so-called architectural vision, which is what guarantees the choice of architecture ideal for the evaluated solution.
-
-For this, the architect evaluates all the architectural options for implementing the application, selecting the set of solutions that will determine the best functioning of the system.
-
-Among the types of software architecture decisions, we have:
-
- - processing;
- - flow, use cases and business logic;
- - infrastructure;
- - implantation.
+In short, Web Sockets and Socket.io are technologies that enable real-time, two-way communication between a client and a server. While Web Sockets provides the communication infrastructure, Socket.io provides an abstraction layer to simplify implementation and provide additional features.
  
-### Domain Driven Design
+### Sass
 
-When you talk about Domain-Driven Design (DDD), you immediately think of the `architectural model`, the DDD building blocks and related design patterns.
+Sass (Syntactically Awesome Style Sheets) is a web styling language that is an extension of CSS (Cascading Style Sheets). It's designed to make web styling easier, more efficient, and more flexible.
 
-However, to work with DDD we need to develop some more skills, such as learning to model domains effectively, and for that, we need to become what Eric Evans calls `Knowledge Crunchers`, someone prepared to receive, filter and organize a avalanche of information. Domain-Driven Design is, first of all, `communication`. In DDD modeling and implementation go hand in hand. Domain experts (users, analysts, and other domain experts) along with developers and architects work hand in hand with a common goal: to build domain-driven software to meet customer needs.
+Sass syntax is based on a set of rules and conventions that allow the developer to create more complex styles, keeping the code organized and easy to read. Sass adds a lot of useful functionality to CSS, such as variables, mixins, inheritance, nesting, and functions. These features make the code more modular and reusable, which saves time and reduces the possibility of errors.
 
-To do this, in the first place, it is necessary that everyone uses a common language and that there is no translation in the communication between team members. The team therefore develops a ubiquitous (general and universal) language that expresses the knowledge of business experts for the domain model (for the code).
+Sass variables allow the developer to define values that can be used throughout the code, making it easier to maintain and update styles. Mixins allow the developer to define a set of rules that can be reused throughout the code. Nesting allows the developer to nest CSS rules within other rules, which helps keep the code organized and easy to read. Inheritance allows the developer to create classes that inherit properties from other classes, reducing redundancy in code.
 
- - <strong>Domain and Model</strong>
- 
-The domain of a software are the activities performed by the user and their area of ​​interest. The domain can be as complex as the processes and data it comprises.
+Sass is compiled into CSS, which means it must be processed before being used on a website. There are several tools that can be used to compile Sass, including command line compilers, IDE plugins, and online services. With Sass, the developer can write more efficient and flexible styles, saving time and reducing code complexity.
 
- - A model is, according to Evans (2004, p. 2) `“a simplification. It is an interpretation of reality that abstracts the relevant aspects to solve the problem in question and ignores extraneous details”.`
+### Clean Architecture & Domain Driven Design (DDD)
 
-With a model we get:
+Clean Architecture and Domain Driven Design (DDD) are two approaches to software development that seek to create more scalable, flexible and maintainable systems. While different in their approach, both focus on organizing the code around business concepts and keeping the code clean and decoupled.
 
- - `Abstract the complexity of the business` through a simplified representation of it — a model.
- - The model serves as something `common and palpable to all team members`, which, together with the ubiquitous language, allows everyone to actively participate in the progressive construction of the same.
- - The model (provided it is done correctly) `guarantees that what is being specified is what is being implemented`.
- - The model `is the means of communication used by the team`. Thanks to the link between model and implementation, developers can speak in the language of the software when communicating with domain experts (without having to translate the message).
- - The model is distilled knowledge — `it's the way the team agrees to structure the knowledge extracted from the domain`.
+Clean Architecture is a software development approach proposed by Robert Martin (Uncle Bob) that focuses on the separation of concepts and the clear definition of boundaries between the different layers of the system. The idea is to create a modular, technology-independent design that can be easily adapted to changing business requirements and technology changes. Clean Architecture is based on a set of principles such as separation of concerns (SoC), dependency inversion (IoC) and object-oriented programming (OOP).
 
-`The model is evolving`: With each iteration between domain experts and the technical team, the model becomes deeper and more expressive, richer, and developers transfer this source of value to the software.
+Domain Driven Design, on the other hand, is an approach that focuses on modeling the business domain and creating a rich and expressive domain model. The idea is to create software design that accurately reflects business needs and processes, rather than focusing on technical issues. DDD is based on a set of patterns and practices, such as aggregation, entities, value objects, domain services, and ubiquitous language.
 
-Thus, `the model is gradually enriched` with the expertise of domain experts distilled by the developers, making the team gain more and more insight into the business and that knowledge is transferred to the model (to the code) through the building blocks of DDD.
+Both approaches seek to create a software design that is flexible, scalable, and easy to maintain. They are especially useful on complex projects and on large teams, where coordination between different parts of the system can be a challenge. By applying Clean Architecture and Domain Driven Design principles, development teams can create systems that are easier to understand, maintain, and evolve.
 
-When new business rules are added and existing rules are changed or removed, the implementation is refactored to reflect these model changes in the code.
+## :speech_balloon: Explanations
 
-In the end, the model (which ultimately will be the software) will express the business with a wealth of knowledge.
+### Factories
 
- - As Evans (2004, p. 23) explains `“DDD puts a lot of knowledge into the model that deeply reflects the domain. This is only possible through collaboration between those who know the domain and those who know how to create software. And because development is iterative, that collaboration continues throughout the life of the project.”`
+Factory Pattern is a software design pattern that belongs to the category of creational patterns. It defines an interface or abstract class for creating objects, but lets subclasses decide which concrete class to implement. In other words, the Factory Pattern is a creation pattern that provides a way to encapsulate the creation of objects in a single place.
 
-That is, Domain-Driven Design leads us to build software guided by knowledge and business modeling before any appeal for technology.
+The Factory Pattern's goal is to provide a flexible way to create objects without explicitly specifying concrete classes. This allows the code to be more extensible and reusable, as changes to concrete classes only affect Factory code and not code that uses the object created by Factory.
 
-Obviously in order for us to successfully implement the domain model, we need engineering.
+The Factory Pattern is commonly used in situations where the code needs to create objects of different classes but does not know in advance which class to create. The Factory Pattern allows concrete classes to be dynamically created based on the needs of the code.
 
-And, therefore, the DDD `guides us through its building blocks` to use some consecrated architecture principles and design patterns, among them I highlight:
+There are several types of Factory Pattern, including Simple Factory, Factory Method and Abstract Factory. Each of these Factory Pattern types has its own characteristics and specific use cases.
 
- - Domain isolation with layered architecture.
- - Model representation through well-defined software artifacts (entities, value objects, services, factories, repositories, specs, modules, etc).
- - Lifecycle management of domain objects with aggregates.
- 
-<strong>The 5 ingredients of an effective model:</strong>
+* <strong>Example 1</strong>:
 
- - Link the model with the implementation: this link is made from the beginning, when the model is still primitive and will be maintained until the end. This bond is deep, the implementation must 100% reflect the model.
- - Cultivate a language based on the model: in the beginning it will be necessary for developers and domain experts to understand each other's terms, but later both will speak the same language, organizing the communication sentences in a structure consistent with the model and without ambiguities.
- - Develop a model rich in knowledge: objects have data and associated behaviors. The model should not just be a data structure (anemic model), it should capture domain knowledge to solve domain problems.
- - Distill the model: the model must be refined. Just as important concepts must be added, concepts that have no relevance must be removed. With each iteration the model will get richer and have more value.
- - Brainstorming and experimentation: direct interaction between developers and domain experts, through brainstorming and on-the-spot diagramming, turns discussions into model labs, in which several variations of experiments can be exercised and the result can be used if it shows value or discarded otherwise.
- 
-*<i>medium.com/cwi-software/domain-driven-design-do-in%C3%ADcio-ao-c%C3%B3digo-569b23cb3d47</i> <br />
-
-<br />
-
-## Factories and Data Mappers 
-
- - <strong>Factories</strong>
-
-`Function factory` is similar to constructor functions/class functions, but instead of using new to create an object, factory functions simply `create an object and return it`.
-
-Factory functions are a very useful tool in JavaScript. Factory functions in JavaScript are similar to constructor functions/class functions, but do not require the use of the `this` keyword for inner values ​​or the use of the `new` keyword when instantiating new objects. Factory functions can contain built-in values, methods, etc., just like normal regular functions. Factory functions differ from regular functions in that they always return an object, which will contain any value, method, etc.
-
-### Why is it useful?
-
-If we have `complex logic and we have to create several objects repeatedly with the same logic`, we can write the logic once in a function and use that function as a factory to create our objects. It's exactly the same as a real-world product factory.
-
-Example 1:
+If we have complex logic and we have to create several objects repeatedly with the same logic, we can write the logic once in a function and use that function as a factory to create our objects. It's exactly the same as a real-world product factory.
 
 We have a factory function that will produce new robots with a single logic. Using this we can produce as many objects/robots as we want.
 
@@ -160,7 +99,7 @@ function createRobot(name) {
   };
 }
 
-//Create a robot with name Chitti
+// Create a robot with name Chitti
 const robo1 = createRobot('Chitti');
 robo1.talk();
 // Create a robot with name Chitti 2.O Upgraded
@@ -168,14 +107,16 @@ const robo2 = createRobot('Chitti 2.O Upgraded');
 robo2.talk();
 ```
 
-output: 
+> output: 
 
 ```
 My name is Chitti, the robot.
 My name is Chitti 2.0 Upgraded, the robot.
 ```
 
-example 2:
+<br />
+
+* <strong>Example 2</strong>:
 
 ```js
 // Factory Function creating person
@@ -205,29 +146,39 @@ var person2 = Person('Raj', 25);
 console.log(person2.greeting());
 ```
 
-output: 
+> output: 
 
 ```
 Hello I am Abhishek. I am 20 years old. 
 Hello I am Raj. I am 25 years old. 
 ```
 
- - <strong>Data Mappers</strong>
+<br />
+
+### Data Mappers
+ 
+Data Mapper is a design pattern used in object-oriented programming to separate data persistence logic from application business logic.
+
+The idea is that, instead of making an application's business objects know how to persist in a database, this is done by an intermediate layer, the Data Mapper, which is responsible for mapping the business objects into database entities and vice versa.
+
+This separation of responsibilities ensures that business classes don't need to know how information is stored in a database, and it allows the developer to change the database schema without affecting business logic. In addition, the Data Mapper also provides a way to query a database without the business logic needing to know specific details of the query.
+
+In summary, the Data Mapper is a middle layer that allows the business classes to be independent of the data persistence logic, making the code more organized, scalable and easier to maintain.
  
 The responsibility of a Mapper is to make all the transformations:
 
- - From Domain to DTO
- - From Domain to Persistence
- - From Persistence to Domain
+* From Domain to DTO
+* From Domain to Persistence
+* From Persistence to Domain
 
-I often find myself in situations where a project has a model on both the server and the client, passed through an API, but with such minor differences between the two that it precludes just using a direct read from the JSON or JSON.stringify (). Sometimes a property is collapsed into one from the `API` but needs to be split into different properties on the `client`.
+I often find myself in situations where a project has a model on both the server and the client, passed through an API, but with such minor differences between the two that it precludes just using a direct read from the JSON or JSON.stringify(). Sometimes a property is collapsed into one from the API but needs to be split into different properties on the client.
 
-Since this concern occurs over and over again, it makes sense to centralize the `translation` of the `API response object <==> Javascript object model`, `standardize` it and take it out so that the right part of your application can be concerned with him.
+Since this concern occurs over and over again, it makes sense to centralize the translation of the <strong>API response object</strong> and <strong>Javascript object model</strong>, standardize it and take it out so that the right part of your application can be concerned with him.
 
- - Examples
+* <strong>Examples</strong>:
 
 ```ts
-// src/mappers/mappers.ts
+// server/src/mappers/mappers.ts
 
 import { Message } from "../domain/entities/Message";
 import { User } from "../domain/entities/User";
@@ -299,160 +250,33 @@ export class MessageMapper {
 
 <br />
 
-## Middlewares 
+### Middlwares
 
-Middleware is software that different `applications use to communicate with each other`. It provides functionality to intelligently and efficiently connect applications so you can innovate faster. Middleware `acts as a bridge between diverse technologies`, tools and databases to integrate them seamlessly into a single system. The single system offers a unified service to its users. For example, a Windows frontend application sends and receives data from a Linux backend server, but the application's users are unaware of the difference.
+In a software application, middleware is a generic term for an intermediate layer of software that sits between different components or layers of a system, with the purpose of facilitating communication between them and adding specific features and functionality.
 
- - <strong>Software development</strong>
+In practice, a middleware is a piece of code that can intercept a request or a response before it reaches its final destination. This can be used to perform validations, authentications, request logging, error handling and many other common tasks in an application.
 
-Software developers use middleware to integrate different software components into other applications. The middleware offers an application programming interface (API) standard to manage the necessary input and output of data from the component. The internal binding with the component is not visible to the user. Developers use APIs to request necessary services from software components.
+In the architecture of a web application, the middleware is usually implemented in the HTTP server, which can execute a sequence of middlewares before passing the request to the main application. This allows for greater modularity, scalability and code reuse, as the middleware can be used in different parts of the application.
 
- - <strong>Data transmission</strong>
+In Express, middlewares are functions that have access to the request and response objects (known as req and res, respectively) and the next middleware function in the application's request-response cycle. The cycle starts when an HTTP request is received and ends when the response is sent.
 
-Software applications use middleware to reliably send and receive data streams. Data streams are a high-speed transmission of continuous data. They are important for reliable video and audio transmissions.
+A middleware in Express can perform one or several tasks, such as:
 
-### Using middlewares with Express
+* Manipulate or validate data in the request
+* authenticate users
+* Handle errors and exceptions
+* Send an HTTP response with a status code, headers, and response body.
 
-Express is a web-based routing and middleware framework that has minimal functionality of its own: `An Express application is essentially a series of calls to middleware functions`.
+The use of middleware in Express is very flexible and can be applied at different levels of the application, such as specific routes, the entire application or groups of routes.
 
-Middleware functions are functions that have access to the `request (req) object`, the `response (res) object`, and the next middleware function in the application's request-response cycle. The next middleware function is commonly denoted by a variable called `next`.
+To use a middleware in Express, just create a function that receives three parameters (req, res and next) and call the `next()` method at the end of the code, to pass the request to the next middleware. If you do not call next(), the request will remain pending and the application will not respond.
 
-Middleware functions can perform the following tasks:
+#### ensureAuthenticated Middleware in the Application
 
- - Run any code.
- - Make changes to the request and response objects.
- - Terminate the request-response cycle.
- - Call the next middleware function on the stack.
-
-If the current middleware function does not finish the request-response cycle, it needs to call `next()` to pass control to the next middleware function. Otherwise, the request will be suspended.
-
-An Express application can use the following types of middleware:
- 
- - Application-level middleware
- - Router-grade middleware
- - Error handling middleware
- - Integrated middleware
- - Third Party Middleware
-
-You can load both router-level and application-level middleware with an optional mount path. It is also possible to load a number of middleware functions together, which creates a sub-stack of the middleware system at a mount point.
-
-#### Application-level middleware
-
-Bind application-level middleware to an instance of the `app object` using the `app.use()` and `app.METHOD()` functions, `where METHOD is the HTTP method of the request` that the middleware function handles (such as GET, PUT, or POST) in lower case.
-
-This example shows a middleware function without an mount path. `The function runs whenever the application receives a request`.
-
-```js
-var app = express();
-
-app.use(function (req, res, next) {
-  console.log('Time:', Date.now());
-  next();
-});
-```
-
-This example shows a middleware role built into the path `/user/:id`. The function runs for any type of HTTP request in the `/user/:id` path.
-
-```js
-app.use('/user/:id', function (req, res, next) {
-  console.log('Request Type:', req.method);
-  next();
-});
-```
-
-To skip the rest of the middleware functions of a router middleware stack, call next('route') to pass control to the next route. NOTE: next('route') will only work on middleware functions that are loaded using the app.METHOD() or router.METHOD() functions.
-
-This example shows a middleware sub-stack that handles GET requests on the path /user/:id.
-
-```js
-app.get('/user/:id', function (req, res, next) {
-  // if the user ID is 0, skip to the next route
-  if (req.params.id == 0) next('route');
-  // otherwise pass the control to the next middleware function in this stack
-  else next(); //
-}, function (req, res, next) {
-  // render a regular page
-  res.render('regular');
-});
-
-// handler for the /user/:id path, which renders a special page
-app.get('/user/:id', function (req, res, next) {
-  res.render('special');
-});
-```
-
-#### Router-grade middleware
-
-Router-level middleware works the same as application-level middleware, but `is bound to an instance of express.Router()`.
-
-```js
-var router = express.Router();
-```
-
-Load router-level middleware using the `router.use()` and `router.METHOD()` functions.
-
-The following example code replicates the middleware system shown above for application-level middleware, using router-level middleware:
-
-```js
-var app = express();
-var router = express.Router();
-
-// a middleware function with no mount path. This code is executed for every request to the router
-router.use(function (req, res, next) {
-  console.log('Time:', Date.now());
-  next();
-});
-
-// a middleware sub-stack shows request info for any type of HTTP request to the /user/:id path
-router.use('/user/:id', function(req, res, next) {
-  console.log('Request URL:', req.originalUrl);
-  next();
-}, function (req, res, next) {
-  console.log('Request Type:', req.method);
-  next();
-});
-
-// a middleware sub-stack that handles GET requests to the /user/:id path
-router.get('/user/:id', function (req, res, next) {
-  // if the user ID is 0, skip to the next router
-  if (req.params.id == 0) next('route');
-  // otherwise pass control to the next middleware function in this stack
-  else next(); //
-}, function (req, res, next) {
-  // render a regular page
-  res.render('regular');
-});
-
-// handler for the /user/:id path, which renders a special page
-router.get('/user/:id', function (req, res, next) {
-  console.log(req.params.id);
-  res.render('special');
-});
-
-// mount the router on the app
-app.use('/', router);
-```
-
-#### Error handling middleware
-
-> Error handling middleware always takes `four arguments`. You must provide four arguments to identify it as an error-handling middleware function. Even if you don't need to use the next object, you must specify it to maintain the signature. Otherwise, the next object will be interpreted as ordinary middleware and error handling will fail.
- 
-Define error-handling middleware functions the same way as other middleware functions, except with four arguments instead of three, specifically with the signature `(err, req, res, next)`:
-
-```js
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
-```
-*<i>expressjs.com/pt-br/guide/using-middleware.html</i> <br />
-
-### ensureAuthenticated Middleware in the Application
-
-The ensureAuthenticated middleware checks if the user's `JWT token` exists and if it hasn't expired yet, it's a way to control the requests made to the `GET /profile` and `POST /messages` routes since we don't want to get the data from a user who at least has an authentication token, for that he must go through the `/authenticate` route that will generate such a token for the user, and such route is free from the ensureAuthenticated middleware. We also want to ensure that only authenticated users can send messages on the platform, so the `POST /messages` route also has middleware. Note that the authentication token is always being sent from the client side via the headers but specifically `authorization`:
+The ensureAuthenticated middleware checks if the user's JWT token exists and if it hasn't expired yet, it's a way to control the requests made to the `GET /profile` and `POST /messages` routes since we don't want to get the data from a user who at least has an authentication token, for that he must go through the `/authenticate` route that will generate such a token for the user, and such route is free from the ensureAuthenticated middleware. We also want to ensure that only authenticated users can send messages on the platform, so the `POST /messages` route also has middleware. Note that the authentication token is always being sent from the client side via the headers but specifically `authorization`:
 
 ```ts
-// src/infra/http/middleware/ensureAuthenticated.ts
+// server/src/infra/http/middleware/ensureAuthenticated.ts
 
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
@@ -488,7 +312,7 @@ export function ensureAuthenticated(
 ```
 
 ```ts 
-// src/infra/http/routes.ts
+// server/src/infra/http/routes.ts
 
 // ...
 const router = Router();
@@ -508,9 +332,10 @@ router.get("/messages/last3", new GetLastThereeMessagesController().handle);
 
 export { router };
 ```
+
 <br />
 
-## Github Authentication - Web application Flow
+### Github Authentication: Web application Flow
 
 The web application flow to authorize users for your app is:
 
@@ -519,15 +344,15 @@ The web application flow to authorize users for your app is:
 3. Your app accesses the API with the user's access token
 
 
-### 1. Request a user's GitHub identity
+#### 1. Request a user's GitHub identity
 
 ```
 GET https://github.com/login/oauth/authorize
 ```
 
-#### Parameters
+* <strong>Parameters</strong>
  
- - <strong>client_id <i>string Required</i></strong> - The client ID you received from GitHub when you registered.
+> <strong>client_id <i>string Required</i></strong> - The client ID you received from GitHub when you registered.
 
 ```tsx
 // web/src/contexts/auth.tsx
@@ -681,15 +506,15 @@ export class RegisterUser {
 }
 ```
 
-#### Parameters
+* <strong>Parameters</strong>
  
- - <strong>client_id <i>string Required</i></strong> - The client ID you received from GitHub for your OAuth App.
- - <strong>client_secret <i>string	Required</i></strong> - The client secret you received from GitHub for your OAuth App.
- - <strong>code <i>string	Required</i></strong> - The code you received as a response to `Step 1`.
+> <strong>client_id <i>string Required</i></strong> - The client ID you received from GitHub for your OAuth App.
+> <strong>client_secret <i>string	Required</i></strong> - The client secret you received from GitHub for your OAuth App.
+> <strong>code <i>string	Required</i></strong> - The code you received as a response to `Step 1`.
  
-### 3. Use the access token to access the API
+#### 3. Use the access token to access the API
 
-`The access token allows you to make requests to the API on a behalf of a user`.
+The access token allows you to make requests to the API on a behalf of a user.
 
 ```
 Authorization: Bearer OAUTH-TOKEN
@@ -762,5 +587,5 @@ export class PrismaUsersRepository implements UsersRepository {
 }
 ```
 
-<i>docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps#web-application-flow</i> <br />
+<p align="center">Project made with :blue_heart: by <a href="https://github.com/stardusteight-d4c">Gabriel Sena</a></p>
 
